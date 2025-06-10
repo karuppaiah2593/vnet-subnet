@@ -1,0 +1,28 @@
+name: Terraform Build
+on:
+  push:
+    branches:
+      - main
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checkout main repo (equivalent to 'self')
+      - name: Checkout vent-subnet 
+        uses: actions/checkout@v4
+
+      # Create artifact staging directory
+      - name: Create staging directory
+        run: mkdir -p artifact/vnet-subnet
+
+      # Copy r1-azinfra contents (main repo) into staging
+      - name: Copy vnet-subnet to staging
+        run: cp -r ./* artifact/vnet-subnet/
+
+      # Upload artifacts
+      - name: Upload Terraform Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: terraform
+          path: artifact/
