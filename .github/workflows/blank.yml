@@ -18,9 +18,9 @@ jobs:
       - name: Create staging directory
         run: mkdir -p artifact/vnet-subnet
 
-      # Copy r1-azinfra contents (main repo) into staging
-      - name: Copy r1-azinfra to staging
-        run: cp -r ./* artifact/vnet-subnet/
+      - name: Copy r1-azinfra to staging using rsync
+        run: rsync -av --exclude='artifact' ./ artifact/vnet-subnet/
+
 
       # Upload artifacts
       - name: Upload Terraform Artifact
