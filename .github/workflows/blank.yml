@@ -10,16 +10,21 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout main repository
+      # Checkout main repo (equivalent to 'self')
+      - name: Checkout vnet-subnet (main repo)
         uses: actions/checkout@v4
 
-      - name: Copy vnet-subnet into artifact staging directory
-        run: |
-          mkdir -p ${{ github.workspace }}/artifact_staging/vnet-subnet
-          cp -r vnet-subnet/. ${{ github.workspace }}/artifact_staging/vnet-subnet
+      # Create artifact staging directory
+      - name: Create staging directory
+        run: mkdir -p artifact/vnet-subnet
 
-      - name: Upload terraform artifact
+      # Copy r1-azinfra contents (main repo) into staging
+      - name: Copy r1-azinfra to staging
+        run: cp -r ./* artifact/vnet-subnet/
+
+      # Upload artifacts
+      - name: Upload Terraform Artifact
         uses: actions/upload-artifact@v4
         with:
           name: terraform
-          path: artifact_staging
+          path: artifact/
