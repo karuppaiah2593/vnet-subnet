@@ -13,6 +13,12 @@ resource "azurerm_network_security_group" "example" {
   name                = "test-security-group"
   location            = azurerm_resource_group.example.location
   resource_group_name = azurerm_resource_group.example.name
+  tags = {
+    CreatedBy  = "Devops"
+    UsedBy     = "Testing"
+    UsedFor    = "Testing"
+    Owner      = "IT"
+  }
 }
 
 resource "azurerm_virtual_network" "example" {
@@ -34,6 +40,9 @@ resource "azurerm_virtual_network" "example" {
   }
 
   tags = {
-    environment = "Production"
+    CreatedBy  = "Devops"
+    UsedBy     = "Testing"
+    UsedFor    = "Testing"
+    Owner      = "IT"
   }
 }
