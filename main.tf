@@ -1,6 +1,12 @@
 resource "azurerm_resource_group" "example" {
   name     = "test-rg"
   location = "East US"
+  tags = {
+    CreatedBy  = "Devops"
+    UsedBy     = "Testing"
+    UsedFor    = "Testing"
+    Owner      = "IT"
+  }
 }
 
 resource "azurerm_network_security_group" "example" {
