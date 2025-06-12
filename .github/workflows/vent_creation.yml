@@ -20,9 +20,6 @@ jobs:
       ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
       ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
 
-    outputs:
-      plan-status: ${{ steps.plan.outcome }}
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -43,21 +40,23 @@ jobs:
         run: terraform init
 
       - name: Terraform Plan
-        id: plan
         run: terraform plan -out=tfplan
 
-      - name: Upload tfplan Artifact
+      - name: Upload Terraform Artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: tfplan
-          path: tfplan
+          name: terraform-artifacts
+          path: |
+            tfplan
+            .terraform.lock.hcl
+            .terraform/
 
 
   terraform-apply:
     name: Terraform Apply (after approval)
     needs: terraform-plan
     runs-on: ubuntu-latest
-    environment: prod-approval  # 👈 Manual approval here
+    environment: production  # 👈 Approval will be required here
 
     env:
       ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
@@ -81,10 +80,10 @@ jobs:
           tenant-id: ${{ secrets.ARM_TENANT_ID }}
           subscription-id: ${{ secrets.ARM_SUBSCRIPTION_ID }}
 
-      - name: Download tfplan Artifact
+      - name: Download Terraform Artifacts
         uses: actions/download-artifact@v4
         with:
-          name: tfplan
+          name: terraform-artifacts
           path: .
 
       - name: Terraform Apply
