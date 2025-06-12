@@ -42,6 +42,12 @@ jobs:
           name: tfplan
           path: tfplan
 
+      - name: Upload lock file
+        uses: actions/upload-artifact@v4
+        with:
+          name: terraform-lock
+          path: .terraform.lock.hcl
+
   terraform-apply:
     name: Terraform Apply
     runs-on: ubuntu-latest
@@ -68,6 +74,19 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: tfplan
+          path: tfplan
+
+      - name: Download lock file
+        uses: actions/download-artifact@v4
+        with:
+          name: terraform-lock
+          path: terraform-lock
+
+      - name: Move lock file to root
+        run: mv terraform-lock/.terraform.lock.hcl .terraform.lock.hcl
+
+      - name: Terraform Init
+        run: terraform init
 
       - name: Terraform Apply
         run: terraform apply -auto-approve tfplan
