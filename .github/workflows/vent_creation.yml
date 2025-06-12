@@ -56,7 +56,7 @@ jobs:
     name: Terraform Apply (after approval)
     needs: terraform-plan
     runs-on: ubuntu-latest
-    environment: production  # 👈 Approval will be required here
+    environment: prod-approval  # 👈 Approval will be required here
 
     env:
       ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
