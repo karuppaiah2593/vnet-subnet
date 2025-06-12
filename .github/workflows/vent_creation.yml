@@ -15,7 +15,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: ./terraform
+        working-directory: .
 
     steps:
       - name: Checkout code
@@ -45,7 +45,7 @@ jobs:
     needs: init-validate
     defaults:
       run:
-        working-directory: ./terraform
+        working-directory: .
 
     steps:
       - name: Checkout code
@@ -70,7 +70,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: tfplan
-          path: ./terraform/tfplan
+          path: tfplan
 
   wait-for-approval:
     name: Manual Approval
@@ -88,7 +88,7 @@ jobs:
     needs: wait-for-approval
     defaults:
       run:
-        working-directory: ./terraform
+        working-directory: .
 
     steps:
       - name: Checkout code
@@ -110,7 +110,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: tfplan
-          path: ./terraform
+          path: .
 
       - name: Terraform Apply
         run: terraform apply -auto-approve tfplan
